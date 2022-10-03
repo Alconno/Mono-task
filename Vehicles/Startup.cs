@@ -9,7 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Vehicles.Data;
+using Service.Data;
+using Autofac.Integration.Mvc;
+using Autofac;
+using System.Web.Mvc;
+using Vehicles.Controllers;
+using Service.Models;
+using Vehicles.Models;
+using Autofac;
 
 namespace Vehicles
 {
@@ -18,6 +25,37 @@ namespace Vehicles
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            /*
+            var builder = new ContainerBuilder();
+
+            // Register MVC Controllers
+            builder.RegisterType<HomeController>().InstancePerRequest();
+            builder.RegisterType<VehicleMakeController>().InstancePerRequest();
+            builder.RegisterType<VehicleModelController>().InstancePerRequest();
+            builder.RegisterType<AppointmentController>().InstancePerRequest();
+            // builder.RegisterControllers(typeof(MvcApplication).Assembly);
+
+
+            // OPTIONAL: Register model binders that require DI.
+            builder.RegisterModelBinders(typeof(Service.Models.VehicleModel).Assembly);
+            builder.RegisterModelBinders(typeof(Service.Models.VehicleModel).Assembly);
+            builder.RegisterModelBinders(typeof(ErrorViewModel).Assembly);
+            builder.RegisterModelBinderProvider();
+
+            // OPTIONAL: Register web abstractions like HttpContextBase.
+            builder.RegisterModule<AutofacWebTypesModule>();
+
+            // OPTIONAL: Enable property injection in view pages.
+            builder.RegisterSource(new ViewRegistrationSource());
+
+            // OPTIONAL: Enable property injection into action filters.
+            builder.RegisterFilterProvider();
+
+
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            */
         }
 
         public IConfiguration Configuration { get; }

@@ -4,25 +4,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Vehicles.Data;
 using Vehicles.Models;
 using System.Linq;
 using AutoMapper;
+using Service.Data;
+using Service.Models;
+using Vehicles.Controllers;
+
+
 
 namespace Vehicles.Controllers
 {
     public class VehicleMakeController : Controller
     {
         private readonly AppDBContext _db;
-        private readonly IMapper _mapper;
 
-        public VehicleMakeController(AppDBContext db, IMapper mapper)
+        public VehicleMakeController(AppDBContext db)
         {
             _db = db;
-            _mapper = mapper;
         }
 
-   
+        FilteredList<Service.Models.VehicleMake> currentFL = new FilteredList<Service.Models.VehicleMake>(); // filtered list
+        SortedList<Service.Models.VehicleMake> currentSL = new SortedList<Service.Models.VehicleMake>(); // sorted list
+        public async Task<PaginatedList<Service.Models.VehicleMake>> getAll(string sortOrder, string searchString, int? pageNumber, int pageSize, int currentPageSize)
+        {
+            var VehicleMakes = from s in _db.VehicleMake select s;
+
+            return await PaginatedList<Service.Models.VehicleMake>.CreateAsync(
+                                VehicleMakes = currentSL.sortMakeList(currentFL.filterMakeList(VehicleMakes, searchString),sortOrder).AsNoTracking(),
+                                pageNumber > Math.Ceiling(Convert.ToDouble(VehicleMakes.Count()) / Convert.ToDouble(pageSize)) ? 1 : pageNumber ?? 1,
+                                pageSize);
+        }
 
         public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber, int pageSize, int currentPageSize)
         {
@@ -40,60 +52,12 @@ namespace Vehicles.Controllers
             {
                 searchString = currentFilter;
             }
-            // Filtering params
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = searchString;// Filtering params
 
+            pageSize = currentPageSize == 0 ? pageSize = currentPageSize = 3 : currentPageSize;            
+            ViewData["CurrentPageSize"] = pageSize;// Page size params
 
-
-            if (currentPageSize == 0)
-            {
-                pageSize = currentPageSize = 3;
-            }
-            else
-            {
-                pageSize = currentPageSize;
-            }
-            // Page size params
-            ViewData["CurrentPageSize"] = pageSize;
-
-
-
-            var VehicleMakes = from s in _db.VehicleMake select s;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                VehicleMakes = VehicleMakes.Where(s =>
-                                                        s.Guid.ToString().Contains(searchString)||
-                                                        s.Name.Contains(searchString)||
-                                                        s.Abrv.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "nameDesc":
-                    VehicleMakes = VehicleMakes.OrderByDescending(s => s.Name);
-                    break;
-                case "guid":
-                    VehicleMakes = VehicleMakes.OrderBy(s => s.Guid);
-                    break;
-                case "guidDesc":
-                    VehicleMakes = VehicleMakes.OrderByDescending(s => s.Guid);
-                    break;
-                case "abrv":
-                    VehicleMakes = VehicleMakes.OrderBy(s => s.Abrv);
-                    break;
-                case "abrvDesc":
-                    VehicleMakes = VehicleMakes.OrderByDescending(s => s.Abrv);
-                    break;
-                default:
-                    VehicleMakes = VehicleMakes.OrderBy(s => s.Guid);
-                    break;
-            }
-
-            return View(await PaginatedList<VehicleMake>.CreateAsync(
-                                                        VehicleMakes.AsNoTracking(),
-                                                        pageNumber > Math.Ceiling(Convert.ToDouble(VehicleMakes.Count()) / Convert.ToDouble(pageSize)) ? 1 : pageNumber ?? 1,
-                                                        pageSize));
+            return View(await getAll(sortOrder, searchString, pageNumber, pageSize, currentPageSize));
         }
 
         // GET-Create
@@ -105,7 +69,7 @@ namespace Vehicles.Controllers
         // POST-Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleMake obj)
+        public async Task<IActionResult> Create(Service.Models.VehicleMake obj)
         {
             if (ModelState.IsValid && _db.VehicleMake.Find(obj.Guid) == null) // server side validation
             {
@@ -135,7 +99,7 @@ namespace Vehicles.Controllers
         // POST-Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(VehicleMake obj)
+        public async Task<IActionResult> Delete(Service.Models.VehicleMake obj)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +129,7 @@ namespace Vehicles.Controllers
         // POST-Update
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(VehicleMake obj)
+        public async Task<IActionResult> Update(Service.Models.VehicleMake obj)
         {
             if (ModelState.IsValid)
             {

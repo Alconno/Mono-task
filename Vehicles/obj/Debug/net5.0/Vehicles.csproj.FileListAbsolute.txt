@@ -325,7 +325,6 @@ C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.GeneratedMSBuil
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.AssemblyInfoInputs.cache
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.AssemblyInfo.cs
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.csproj.CoreCompileInputs.cache
-C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.RazorAssemblyInfo.cache
 C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.RazorAssemblyInfo.cs
@@ -438,3 +437,15 @@ C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Microsoft.Extensions.Dep
 C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Service.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Service.pdb
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Autofac.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\obj\Debug\net5.0\Vehicles.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Autofac.Integration.Mvc.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.Mvc.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.Razor.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.Helpers.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\System.Web.WebPages.dll
+C:\Users\Opa\Desktop\Vehicles\Vehicles\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll

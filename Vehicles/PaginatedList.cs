@@ -1,4 +1,5 @@
 ﻿using  Microsoft.EntityFrameworkCore;
+using Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +36,13 @@ namespace Vehicles
             }
         }
 
-        public static async Task<PaginatedList<T>>CreateAsync(IQueryable<T>src, int pageIdx, int pageSize)
+        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> src, int pageIdx, int pageSize)
         {
             var count = await src.CountAsync();
             var items = await src.Skip((pageIdx-1)*pageSize).Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIdx, pageSize);
         }
+
+    
     }
 }

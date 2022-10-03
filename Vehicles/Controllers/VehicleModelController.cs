@@ -5,17 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
-using Vehicles.Data;
+using Service.Data;
 using Vehicles.Models;
 using System.Linq;
 using AutoMapper;
+using Service.Models;
+using System.ComponentModel;
 
 namespace Vehicles.Controllers
 {
-    abstract class AbstractVehicleModelController
-    {
-        public abstract Task<IActionResult> Index();
-    }
     public class VehicleModelController : Controller
     {
         private readonly AppDBContext _db;
@@ -25,8 +23,19 @@ namespace Vehicles.Controllers
             _db = db;
         }
 
-        
-        public async Task<IActionResult>Index(string sortOrder, string searchString, string currentFilter, int?pageNumber, int pageSize, int currentPageSize)
+        FilteredList<Service.Models.VehicleModel> currentFL = new FilteredList<Service.Models.VehicleModel>(); // filtered list
+        SortedList<Service.Models.VehicleModel> currentSL = new SortedList<Service.Models.VehicleModel>(); // sorted list
+        public async Task<PaginatedList<Service.Models.VehicleModel>> getAll(string sortOrder, string searchString, int? pageNumber, int pageSize, int currentPageSize)
+        {
+            var VehicleModels = from s in _db.VehicleModel select s;
+            
+            return await PaginatedList<Service.Models.VehicleModel>.CreateAsync(
+                                VehicleModels = currentSL.sortModelList(currentFL.filterModelList(VehicleModels, searchString), sortOrder).AsNoTracking(),
+                                pageNumber > Math.Ceiling(Convert.ToDouble(VehicleModels.Count()) / Convert.ToDouble(pageSize)) ? 1 : pageNumber ?? 1,
+                                pageSize);
+        }
+
+        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber, int pageSize, int currentPageSize)
         {
             // Sorting params
             ViewData["CurrentSort"] = sortOrder;
@@ -44,61 +53,13 @@ namespace Vehicles.Controllers
             {
                 searchString = currentFilter;
             }
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = searchString;//filtering params
 
 
-            // Page size
-            if (currentPageSize == 0)
-            {
-                pageSize = currentPageSize = 3;
-            }
-            else
-            {
-                pageSize = currentPageSize;
-            }
-            ViewData["CurrentPageSize"] = pageSize;
+            pageSize = currentPageSize == 0 ? pageSize = currentPageSize = 3 : currentPageSize;
+            ViewData["CurrentPageSize"] = pageSize;//page size params
 
-
-
-            var VehicleModels = from s in _db.VehicleModel select s;
-
-            if(!String.IsNullOrEmpty(searchString))
-            {
-                VehicleModels = VehicleModels.Where(s => s.MakeId.ToString().Contains(searchString)); 
-            }
-
-            switch (sortOrder)
-            {
-                case "nameDesc":
-                    VehicleModels = VehicleModels.OrderByDescending(s => s.Name);
-                    break;
-                case "guid":
-                    VehicleModels = VehicleModels.OrderBy(s => s.Guid);
-                    break;
-                case "guidDesc":
-                    VehicleModels = VehicleModels.OrderByDescending(s => s.Guid);
-                    break;
-                case "makeId":
-                    VehicleModels = VehicleModels.OrderBy(s => s.MakeId);
-                    break;
-                case "makeIdDesc":
-                    VehicleModels = VehicleModels.OrderByDescending(s => s.MakeId);
-                    break;
-                case "abrv":
-                    VehicleModels = VehicleModels.OrderBy(s => s.Abrv);
-                    break;
-                case "abrvDesc":
-                    VehicleModels = VehicleModels.OrderByDescending(s => s.Abrv);
-                    break;
-                default:
-                    VehicleModels = VehicleModels.OrderBy(s => s.Guid);
-                    break;
-            }
-            
-            return View(await PaginatedList<VehicleModel>.CreateAsync(
-                                                        VehicleModels.AsNoTracking(), 
-                                                        pageNumber > Math.Ceiling(Convert.ToDouble(VehicleModels.Count()) / Convert.ToDouble(pageSize)) ? 1 : pageNumber ?? 1,
-                                                        pageSize));
+            return View(await getAll(sortOrder, searchString, pageNumber, pageSize, currentPageSize));
         }
 
         // GET-Create
@@ -110,7 +71,7 @@ namespace Vehicles.Controllers
         // POST-Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleModel obj)
+        public async Task<IActionResult> Create(Service.Models.VehicleModel obj)
         {
             if (ModelState.IsValid && _db.VehicleMake.Find(obj.MakeId) != null) // server side validation
             {
@@ -129,7 +90,7 @@ namespace Vehicles.Controllers
             {
                 return NotFound();
             }
-            var obj =  _db.VehicleModel.Find(id);
+            var obj = _db.VehicleModel.Find(id);
             if (obj==null)
             {
                 return NotFound();
@@ -140,7 +101,7 @@ namespace Vehicles.Controllers
         // POST-Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(VehicleModel obj)
+        public async Task<IActionResult> Delete(Service.Models.VehicleModel obj)
         {
             if (ModelState.IsValid)
             {
@@ -170,7 +131,7 @@ namespace Vehicles.Controllers
         // POST-Update
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(VehicleModel obj)
+        public async Task<IActionResult> Update(Service.Models.VehicleModel obj)
         {
             if (ModelState.IsValid)
             {

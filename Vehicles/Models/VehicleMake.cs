@@ -8,17 +8,10 @@ using System.Threading.Tasks;
 
 namespace Vehicles.Models
 {
-    public class VehicleMake
+    public class VehicleMake 
     {
-        [Required]
-        [Range(100, 99999999, ErrorMessage = "Id must contain 3-7 digits")]
-        [Key]
         public int Guid { get; set; }
-
-        [Required]
         public string Name { get; set; }
-
-        [Required]
         public string Abrv { get; set; }
     }
 }
