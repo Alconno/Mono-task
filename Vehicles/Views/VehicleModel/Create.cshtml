@@ -1,0 +1,62 @@
+﻿@using System.Collections
+@model Vehicles.Models.Models.VehicleModel
+
+@{
+    IEnumerable<Vehicles.Models.Models.VehicleMake> vehicleMakes = ViewData["VehicleMakes"] as IEnumerable<Vehicles.Models.Models.VehicleMake>;
+}
+
+
+<form method="post" asp-aciton="Create">
+    <div class="border p-3">
+        <div class="form-group row">
+            <h2 class="text-black-50 pl-3">Add Vehicle Model</h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="MakeId"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="Name"></label>
+                    </div>
+                    <div class="col-4">
+                        <label asp-for="Abrv"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        @Html.DropDownList("MakeId", (IEnumerable<SelectListItem>)ViewData["VehicleMakes"], new { @class = "form-control"})
+                        <span asp-validation-for="MakeId" class="text-danger"></span>
+                    </div>
+                    <div class="col-4">
+                        <input asp-for="Name" class="form-control"></>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-4">
+                        <input asp-for="Abrv" class="form-control"></>
+                        <span asp-validation-for="Abrv" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-2 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-75" value="Add" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-danger w-75">Back</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+    }
