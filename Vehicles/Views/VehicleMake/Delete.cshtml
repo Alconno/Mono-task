@@ -9,25 +9,19 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Id"></label>
-                    </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <label asp-for="Name"></label>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <label asp-for="Abrv"></label>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-4">
-                        <input asp-for="Id" class="form-control"></>
+                    <div class="col-6">
+                        <span asp-for="Name" class="form-control">@Model.Name</>
                     </div>
-                    <div class="col-4">
-                        <input asp-for="Name" class="form-control"></>
-                    </div>
-                    <div class="col-4">
-                        <input asp-for="Abrv" class="form-control"></>
+                    <div class="col-6">
+                        <span asp-for="Abrv" class="form-control">@Model.Abrv</>
                     </div>
                 </div>
                 <div class="form-group row">

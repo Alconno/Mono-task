@@ -71,6 +71,7 @@ namespace Vehicles.Controllers
         // GET-Delete
         public async Task<IActionResult> Delete(Guid id)
         {
+            ViewData["VehicleMakeName"] = _vehicleMakeService.GetAsync(_vehicleModelService.GetAsync(id).Result.MakeId).Result.Name;   
             var obj = await _vehicleModelService.GetAsync(id);
             if (obj != null) return View(obj);
             return NotFound();
@@ -88,6 +89,7 @@ namespace Vehicles.Controllers
         // GET-Update
         public async Task<IActionResult> Update(Guid id)
         {
+            ViewData["VehicleMakes"] = (await GetVehicleMakesList()).Select(obj => new SelectListItem { Text=obj.Name, Value=obj.Id.ToString() }).ToList();
             var obj = await _vehicleModelService.GetAsync(id);
             if (obj == null) return NotFound();
             return View(obj);
@@ -100,13 +102,6 @@ namespace Vehicles.Controllers
         {
             await _vehicleModelService.UpdateAsync(obj.Id, obj);
             return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> DisplayMake(Guid id)
-        {
-            var obj = await _vehicleMakeService.GetAsync(id);
-            if(obj == null) return NotFound();
-            return View(obj);
         }
     }
 }

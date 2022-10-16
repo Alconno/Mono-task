@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Vehicles.Service.Services
 
         public async Task<VehicleModel> UpdateAsync(Guid id, VehicleModel entity)
         {
-            if (entity.Name != null && entity.Abrv != null && _db.VehicleMake.Find(id) != null)
+            if (entity.Name != null && entity.Abrv != null)
             {
                 entity.Id=id;
                 _db.VehicleModel.Update(entity);
