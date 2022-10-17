@@ -66,7 +66,7 @@ namespace Vehicles.Service.Services
         public async Task<Pagination<VehicleMake>> GetAllFilters(string sortOrder, string searchString, int? pageNumber, int pageSize, int currentPageSize)
         {
             Sort<VehicleMake> sort = new Sort<VehicleMake>();
-            VehicleFilter<VehicleMake> filter = new VehicleFilter<VehicleMake>();
+            VehicleFilter filter = new VehicleFilter();
             var obj = sort.sortList(filter.filterMakeList(GetAllAsync().Result, searchString).Result, sortOrder);
 
             return await (Pagination<VehicleMake>.CreateAsync(

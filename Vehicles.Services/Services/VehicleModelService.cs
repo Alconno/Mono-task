@@ -24,6 +24,7 @@ namespace Vehicles.Service.Services
             if (entity.Name != null && entity.Abrv != null && _db.VehicleMake.Find(entity.MakeId) != null)
             {
                 entity.Id = new Guid();
+                entity.Make = _db.VehicleMake.Find(entity.MakeId);
                 _db.VehicleModel.Add(entity);
                 _db.SaveChanges();
                 return await Task.FromResult(entity);
@@ -36,6 +37,7 @@ namespace Vehicles.Service.Services
             if (entity.Name != null && entity.Abrv != null)
             {
                 entity.Id=id;
+                entity.Make = _db.VehicleMake.Find(entity.MakeId);
                 _db.VehicleModel.Update(entity);
                 _db.SaveChanges();
                 return await Task.FromResult(entity);
@@ -68,8 +70,8 @@ namespace Vehicles.Service.Services
         public async Task<Pagination<VehicleModel>> GetAllFilters(string sortOrder, string searchString, int? pageNumber, int pageSize, int currentPageSize)
         {
             Sort<VehicleModel> sort = new Sort<VehicleModel>();
-            VehicleFilter<VehicleModel> filter = new VehicleFilter<VehicleModel>();
-            var obj = sort.sortList(filter.filterMakeList(GetAllAsync().Result, searchString).Result, sortOrder);
+            VehicleFilter filter = new VehicleFilter();
+            var obj = sort.sortList(filter.filterModelList(GetAllAsync().Result, searchString).Result, sortOrder);
 
             return await Pagination<VehicleModel>.CreateAsync(
                                 obj.AsNoTracking(),
