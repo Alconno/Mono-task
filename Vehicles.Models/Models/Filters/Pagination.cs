@@ -7,7 +7,7 @@ using Vehicles.Models.Models;
 
 namespace Vehicles
 {
-    public class Pagination<T> : List<T> where T : IVehicleBase
+    public class Pagination<T> : List<T>, IPagination where T : IVehicleBase
     {
         public int pageIndex { get; private set; }
         public int totalPages { get; private set; }
@@ -36,7 +36,7 @@ namespace Vehicles
             }
         }
 
-        public static async Task<Pagination<T>>CreateAsync(IQueryable<T>source, int pageIdx, int pageSize)
+        public static async Task<Pagination<T>> CreateAsync(IQueryable<T> source, int pageIdx, int pageSize)
         {
             var count = await Task.FromResult(source.Count());
             var items = await Task.FromResult(source.Skip((pageIdx-1)*pageSize).Take(pageSize).ToList());

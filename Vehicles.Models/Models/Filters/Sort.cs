@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Vehicles.Models.Models.Filters
 {
-    public class Sort<T> where T : IVehicleBase
+    public class Sort<T> : ISort<T> where T : IVehicleBase
     {
-        public IQueryable<T>sortList(IQueryable<T>list, string sortOrder)
+        public IQueryable<T> sortList(IQueryable<T> list, string sortOrder)
         {
 
             switch (sortOrder)

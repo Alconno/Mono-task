@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 namespace Vehicles.Controllers
 {
-    public class VehicleMakeController : Controller
+    public class VehicleMakeController : Controller, IVehicleMakeController
     {
-        private  IVehicleMakeService _vehicleMakeService { get;set; }
+        private IVehicleMakeService _vehicleMakeService { get; set; }
         public VehicleMakeController(IVehicleMakeService vehicleMakeService)
         {
-            _vehicleMakeService=vehicleMakeService;   
+            _vehicleMakeService=vehicleMakeService;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber, int pageSize, int currentPageSize)
@@ -38,7 +38,7 @@ namespace Vehicles.Controllers
             ViewData["CurrentPageSize"] = pageSize;// Page size params
 
 
-            return (View (await _vehicleMakeService.GetAllFilters(sortOrder, searchString, pageNumber, pageSize, currentPageSize)));
+            return (View(await _vehicleMakeService.GetAllFilters(sortOrder, searchString, pageNumber, pageSize, currentPageSize)));
         }
 
         // GET-Create

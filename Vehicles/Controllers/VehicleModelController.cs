@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Vehicles.Controllers
 {
-    public class VehicleModelController : Controller
+    public class VehicleModelController : Controller, IVehicleModelController
     {
-        private  IVehicleModelService _vehicleModelService { get;set; }
+        private IVehicleModelService _vehicleModelService { get; set; }
         private IVehicleMakeService _vehicleMakeService { get; set; }
         public VehicleModelController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService)
         {
@@ -23,7 +23,7 @@ namespace Vehicles.Controllers
         private async Task<List<VehicleMake>> GetVehicleMakesList()
         {
             return (await _vehicleMakeService.GetAllAsync()).ToList();
-             
+
         }
 
         public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber, int pageSize, int currentPageSize)
@@ -49,7 +49,7 @@ namespace Vehicles.Controllers
 
             ViewData["VehicleMakes"] = await GetVehicleMakesList();
 
-            return (View (await _vehicleModelService.GetAllFilters(sortOrder, searchString, pageNumber, pageSize, currentPageSize)));
+            return (View(await _vehicleModelService.GetAllFilters(sortOrder, searchString, pageNumber, pageSize, currentPageSize)));
         }
 
         // GET-Create
@@ -71,7 +71,7 @@ namespace Vehicles.Controllers
         // GET-Delete
         public async Task<IActionResult> Delete(Guid id)
         {
-            ViewData["VehicleMakeName"] = _vehicleMakeService.GetAsync(_vehicleModelService.GetAsync(id).Result.MakeId).Result.Name;   
+            ViewData["VehicleMakeName"] = _vehicleMakeService.GetAsync(_vehicleModelService.GetAsync(id).Result.MakeId).Result.Name;
             var obj = await _vehicleModelService.GetAsync(id);
             if (obj != null) return View(obj);
             return NotFound();

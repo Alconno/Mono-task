@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vehicles.Models.Models.Filters
 {
-    public class VehicleFilter
+    public class VehicleFilter : IVehicleFilter
     {
         public async Task<IQueryable<VehicleMake>> filterMakeList(IQueryable<VehicleMake> list, string currentFilter)
-        { 
+        {
             if (currentFilter != null)
             {
                 list = await Task.FromResult((IQueryable<VehicleMake>)list.Where(s => s.Name.Contains(currentFilter)));
